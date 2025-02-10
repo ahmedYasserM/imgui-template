@@ -7,11 +7,10 @@ SRC_DIR = src
 IMGUI_DIR = imgui
 BACKENDS_DIR = backends
 
-# List all the source files with their relative paths
-SOURCES = $(SRC_DIR)/main.cpp \
-          $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp \
-          $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp \
-          $(BACKENDS_DIR)/imgui_impl_glfw.cpp $(BACKENDS_DIR)/imgui_impl_opengl3.cpp
+# Automatically list all the source files using wildcard expansion
+SOURCES = $(wildcard $(SRC_DIR)/*.cpp) \
+          $(wildcard $(IMGUI_DIR)/*.cpp) \
+          $(wildcard $(BACKENDS_DIR)/*.cpp)
 
 # Create a list of object files in the build directory (flattened).
 # This converts, for example, src/main.cpp → build/main.o
@@ -31,7 +30,7 @@ ifeq ($(UNAME_S), Linux)
     CFLAGS = $(CXXFLAGS)
 endif
 
-# The 'all' target builds the final executable inside build/
+# The 'all' target builds the final executable inside the build/ directory
 all: $(BUILD_DIR)/$(TARGET)
 	@echo Build complete for $(ECHO_MESSAGE)
 
@@ -50,7 +49,6 @@ $(BUILD_DIR)/%.o: $(IMGUI_DIR)/%.cpp | $(BUILD_DIR)
 # Pattern rule for compiling backends/*.cpp files
 $(BUILD_DIR)/%.o: $(BACKENDS_DIR)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
-
 
 # Link the final executable
 $(BUILD_DIR)/$(TARGET): $(OBJS)
