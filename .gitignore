@@ -1,0 +1,14 @@
+# Ignore build directory
+/build/
+/.cache/
+
+# Ignore executable
+/main
+
+# Ignore editor-specific files
+.vscode/
+.idea/
+
+# Ignore compiled object files
+*.o
+*.out
